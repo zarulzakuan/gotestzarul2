@@ -31,13 +31,9 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/comments/search/postid/{st}", searchPostID)
-
 	r.HandleFunc("/comments/search/id/{st}", searchCommentID)
-
 	r.HandleFunc("/comments/search/name/{st}", searchName)
-
 	r.HandleFunc("/comments/search/email/{st}", searchEmail)
-
 	r.HandleFunc("/comments/search/body/{st}", searchBody)
 
 	log.Println("Running..")
@@ -64,7 +60,8 @@ func searchCommentID(w http.ResponseWriter, r *http.Request) {
 	var jsonn = fmt.Sprintf("{\"comments\":%s}", resp)
 	avg := gojsonq.New().FromString(jsonn).From("comments")
 	result := avg.Where("id", "=", sti).Get()
-	log.Println(result)
+	jsonString, _ := json.Marshal(result)
+	w.Write(jsonString)
 }
 func searchName(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -73,7 +70,8 @@ func searchName(w http.ResponseWriter, r *http.Request) {
 	var jsonn = fmt.Sprintf("{\"comments\":%s}", resp)
 	avg := gojsonq.New().FromString(jsonn).From("comments")
 	result := avg.Where("name", "contains", st).Get()
-	log.Println(result)
+	jsonString, _ := json.Marshal(result)
+	w.Write(jsonString)
 }
 func searchEmail(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -82,7 +80,8 @@ func searchEmail(w http.ResponseWriter, r *http.Request) {
 	var jsonn = fmt.Sprintf("{\"comments\":%s}", resp)
 	avg := gojsonq.New().FromString(jsonn).From("comments")
 	result := avg.Where("email", "contains", st).Get()
-	log.Println(result)
+	jsonString, _ := json.Marshal(result)
+	w.Write(jsonString)
 }
 func searchBody(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -91,7 +90,8 @@ func searchBody(w http.ResponseWriter, r *http.Request) {
 	var jsonn = fmt.Sprintf("{\"comments\":%s}", resp)
 	avg := gojsonq.New().FromString(jsonn).From("comments")
 	result := avg.Where("body", "contains", st).Get()
-	log.Println(result)
+	jsonString, _ := json.Marshal(result)
+	w.Write(jsonString)
 }
 
 func getAllComments() string {
